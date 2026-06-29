@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { MorphicNavbar } from "@/components/navbar";
+import { NotchNavbar } from "@/components/ui/notch-navbar";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,14 +29,6 @@ export const metadata: Metadata = {
   ],
 };
 
-const NAV_ITEMS = {
-  "/": { name: "home" },
-  "#how-it-works": { name: "how it works" },
-  "#tracks": { name: "tracks" },
-  "#internships": { name: "internships" },
-  "#open-source": { name: "open source" },
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -44,11 +37,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
+      className={`${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-[#0a0a0a] text-[#ededed]">
-        <MorphicNavbar items={NAV_ITEMS} className="py-4 fixed top-0 left-0 right-0 z-50" />
-        {children}
+      <body className="min-h-screen bg-background text-foreground antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NotchNavbar />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
